@@ -2,14 +2,14 @@ from tkinter import *
 import math
 import random
 import playsound
-
+from tkinter import messagebox
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
 RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 1
+WORK_MIN = 40
 SHORT_BREAK_MIN = 10
 LONG_BREAK_MIN = 20
 reps = 0
@@ -25,12 +25,15 @@ start_c = 0
 # ---------------------------- TIMER RESET ------------------------------- # 
 
 def reset_timer():
-    window.after_cancel(timer_new)
-    canvas.itemconfig(timer_text, text="00:00")
-    timer.config(text="Timer")
-    check.config(text="")
-    global reps 
-    reps = 0
+    try:
+        window.after_cancel(timer_new)
+        canvas.itemconfig(timer_text, text="00:00")
+        timer.config(text="Timer")
+        check.config(text="")
+        global reps 
+        reps = 0
+    except ValueError:
+        messagebox.showinfo(title='No Reset',message='Nothing to reset')
 
 
      
@@ -83,9 +86,12 @@ def count_down(count):
             marks += "✔"
         check.config(text=marks)
 
-def change():
-    global rows
-    list_items[rows-6].config(bg=ROW_COLOR)
+#------------------------------------------------------------------------------#
+
+def change(e):
+    catch = e 
+    l_row = catch['row']
+    list_items[l_row-5].config(bg=ROW_COLOR)
 
 
 def items():
@@ -96,7 +102,7 @@ def items():
         return 0
     new_label = Label(text=item)
     new_label.grid(column=1,row=rows)
-    new_button = Button(text='✔',command=change)
+    new_button = Button(text='✔',command=lambda: change(new_button.grid_info()))
     new_button.grid(column=2,row=rows)
 
     rows+=1
