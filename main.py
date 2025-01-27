@@ -1,7 +1,8 @@
 from tkinter import *
 import math
 import random
-import playsound
+import pygame
+
 from tkinter import messagebox
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -78,7 +79,7 @@ def count_down(count):
         timer_new = window.after(1000, count_down, count-1)
     else:
         showwindow()
-        play()
+        play_s()
         start_timer()
         marks = ""
         work_sessions = math.floor(reps/2)
@@ -124,8 +125,12 @@ def pause():
         pause_b.config(text='Pause')
     test+=1
     
-def play():
-    playsound.playsound('/Users/mrinaalnahata/Downloads/mixkit-achievement-bell-600.wav')
+def play_s():
+    pygame.mixer.init()
+    pygame.mixer.music.load('/Users/mrinaalnahata/Downloads/mixkit-achievement-bell-600.wav')
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        continue
 
 
 
